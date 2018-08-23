@@ -7,11 +7,12 @@ const jsonParser = require('body-parser').json;
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/QA', { useNewUrlParser: true });
+mongoose.connect('mongodb://aln20:Blackhawk1506!@ds231242.mlab.com:31242/tic_tac_toe', { useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/QA', { useNewUrlParser: true });
 const db = mongoose.connection;
 
 db.on('error', err =>{
-    console.error('Error while connecting to DB: ${err.message}');
+    console.error('Error while connecting to DB: ' + err.message);
 });
 db.once('open', () =>{
     console.log('DB connected successfully!');
