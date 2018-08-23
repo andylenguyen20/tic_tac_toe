@@ -2,7 +2,7 @@
   "name": "tic_tac_toe",
   "version": "1.0.0",
   "description": "A rest api for tic tac toe",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
       "start": "node app.js"
