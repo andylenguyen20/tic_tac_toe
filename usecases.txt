@@ -1,0 +1,28 @@
+Make a user/Grab the user information:
+
+1. POST to /players/:displayName with a display name and get the user information in the result
+2. If you don't want to create a new user, grab the user info by making a GET to /players/:displayName
+
+Random game:
+
+1. Make a POST to /games/join/:uID with your player's uID returned in the POST or GET
+2a. Look at the result of the POST. If your gameID is in the created_by, we will make GET requests every second to /games/:gameID and continue checking if the opponent key is not null
+2b. If your uID is not in the created_by, then we can start the game immediately. The user who is in the created_by is the one who can make the first move.
+3. The user in the created_by key will make a POST to /games/:gameID/turns with the given turn
+4. The other use will repeatedly make GET requests to /games/:gameID, looking at two keys: the turns key and the result key. If the result key exists, then simply end the game there and display the result. Otherwise, check to see if the last turn (0th index of turns) has the last go by a player whose uID does not match the current user's uID
+
+Disconnections/Cancels:
+
+1. If your user exits the app after a match has already been made with another player, then simply make a POST to /games/:gameID/result/:uID/:action and make your action the lose action with your uID. This makes sure that you forfeit the game because you left the app.
+2. If user exits the app or hits cancel before a match has been made with another player to a game that you created, make a DELETE to /games/:gameID with the gameID created from the POST
+
+Create game:
+
+1. make a POST to /games route
+Same 2c-4 from Random game section
+
+Join a specific game:
+
+1. Make a GET request to /players/:displayName using their requested display name and look for that opponent's uID
+2. Make a POST to /games/join/:uID/:oID with your player's uID and opponent's uID
+3. Repeat steps 3-4 in Random game
