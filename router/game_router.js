@@ -97,7 +97,7 @@ router.post('/join/:uID/:opID?', (req, res, next) => {
 });
 
 // put the result of the game
-router.put('/:gameID/results/:uID/:action', (req, res, next) =>{
+router.post('/:gameID/results/:uID/:action', (req, res, next) =>{
     action = req.params.action;
     uID = req.params.uID;
     var oID = null;
@@ -119,7 +119,7 @@ router.put('/:gameID/results/:uID/:action', (req, res, next) =>{
             if(err) return next(err);
             res.json(game);
         });
-        updatePlayerRecordWinLose(oID, uID, next);
+        updatePlayerRecordLose(uID, next);
     }else if(action === "win"){
         req.game.result = {
             winner: uID,
@@ -129,7 +129,7 @@ router.put('/:gameID/results/:uID/:action', (req, res, next) =>{
             if(err) return next(err);
             res.json(game);
         });
-        updatePlayerRecordWinLose(uID, oID, next);
+        updatePlayerRecordWin(uID, next);
     }else if (action === "draw"){
         req.game.result = {
             draw: true
@@ -138,7 +138,7 @@ router.put('/:gameID/results/:uID/:action', (req, res, next) =>{
             if(err) return next(err);
             res.json(game);
         });
-        updatePlayerRecordDraw(uID, oID, next);
+        updatePlayerRecordDraw(uID, next);
     }else{
         const err = new Error("Not possible to perform action: " + action);
         err.status = 404;
@@ -146,7 +146,7 @@ router.put('/:gameID/results/:uID/:action', (req, res, next) =>{
     }
 });
 
-function updatePlayerRecordWinLose(winnerUID, loserUID, next){
+function updatePlayerRecordWin(winnerUID, next){
     Player.findById(winnerUID, (err, player) => {
         if (err) return next(err);
         if (!player) {
@@ -156,6 +156,9 @@ function updatePlayerRecordWinLose(winnerUID, loserUID, next){
         }
         incrementWin(player)
     });
+}
+
+function updatePlayerRecordLose(loserUID, next){
     Player.findById(loserUID, (err, player) => {
         if (err) return next(err);
         if (!player) {
@@ -167,24 +170,15 @@ function updatePlayerRecordWinLose(winnerUID, loserUID, next){
     });
 }
 
-function updatePlayerRecordDraw(firstUID, secondUID, next){
-    Player.findById(firstUID, (err, player) => {
+function updatePlayerRecordDraw(drawerUID, next){
+    Player.findById(drawerUID, (err, player) => {
         if (err) return next(err);
         if (!player) {
             err = new Error('Player not found');
             err.status = 404;
             return next(err);
         }
-        incrementDraw(firstUID);
-    });
-    Player.findById(secondUID, (err, player) => {
-        if (err) return next(err);
-        if (!player) {
-            err = new Error('Player not found');
-            err.status = 404;
-            return next(err);
-        }
-        incrementDraw(secondUID);
+        incrementDraw(player);
     });
 }
 
