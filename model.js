@@ -15,12 +15,7 @@ const GameSchema = new Schema({
     opponent: String,
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
-    turns: [TurnSchema],
-    result: {
-        winner: String,
-        loser: String,
-        draw: Boolean
-    }
+    turns: [TurnSchema]
 });
 const PlayerSchema = new Schema({
     display_name : String,
