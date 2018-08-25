@@ -6,19 +6,19 @@ This game server is a REST api built using Express.js and Node.js using express 
 
 Game routes:
 
-GET /games
-GET /games/:gameID
-POST /games/:uID
-POST /games/join/:userID/:opID?
-POST /games/:gameID/turns
-DELETE /games/:gameID
+*GET /games
+*GET /games/:gameID
+*POST /games/:uID
+*POST /games/join/:userID/:opID?
+*POST /games/:gameID/turns
+*DELETE /games/:gameID
 
 Player routes:
 
-GET /players
-GET /players/displayName/:displayName
-GET /players/id/:id
-POST /players/:displayName
-POST /players/addResult/:uID/:action
+*GET /players
+*GET /players/displayName/:displayName
+*GET /players/id/:id
+*POST /players/:displayName
+*POST /players/addResult/:uID/:action
 
 Requests can be made to https://murmuring-escarpment-67851.herokuapp.com/
