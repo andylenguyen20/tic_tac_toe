@@ -61,4 +61,81 @@ router.post('/:displayName', (req, res, next) => {
     });
 });
 
+// put the result of the game
+router.post('/addResult/:uID/:action', (req, res, next) =>{
+    action = req.params.action;
+    uID = req.params.uID;
+    if (action === "lose") {
+        updatePlayerRecordLose(uID, next, res);
+    }else if(action === "win"){
+        updatePlayerRecordWin(uID, next, res);
+    }else if (action === "draw"){
+        updatePlayerRecordDraw(uID, next, res);
+    }else{
+        const err = new Error("Not possible to perform action: " + action);
+        err.status = 404;
+        return next(err);
+    }
+});
+
+function updatePlayerRecordWin(winnerUID, next, res){
+    Player.findById(winnerUID, (err, player) => {
+        if (err) return next(err);
+        if (!player) {
+            err = new Error('Player not found');
+            err.status = 404;
+            return next(err);
+        }
+        incrementWin(player)
+    });
+}
+
+function updatePlayerRecordLose(loserUID, next, res){
+    Player.findById(loserUID, (err, player) => {
+        if (err) return next(err);
+        if (!player) {
+            err = new Error('Player not found');
+            err.status = 404;
+            return next(err);
+        }
+        incrementLoss(player)
+    });
+}
+
+function updatePlayerRecordDraw(drawerUID, next, res){
+    Player.findById(drawerUID, (err, player) => {
+        if (err) return next(err);
+        if (!player) {
+            err = new Error('Player not found');
+            err.status = 404;
+            return next(err);
+        }
+        incrementDraw(player);
+    });
+}
+
+function incrementDraw(player, res){
+    player.draws += 1;
+    player.save((err, player) =>{
+        if(err) return next(err);
+        res.json(player);
+    });
+}
+
+function incrementLoss(player, res){
+    player.losses += 1;
+    player.save((err, player) =>{
+        if(err) return next(err);
+        res.json(player);
+    });
+}
+
+function incrementWin(player, res){
+    player.wins += 1;
+    player.save((err, player) =>{
+        if(err) return next(err);
+        res.json(player);
+    });
+}
+
 module.exports = router;
