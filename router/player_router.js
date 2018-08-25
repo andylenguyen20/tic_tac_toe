@@ -86,7 +86,7 @@ function updatePlayerRecordWin(winnerUID, next, res){
             err.status = 404;
             return next(err);
         }
-        incrementWin(player)
+        incrementWin(player, res)
     });
 }
 
@@ -98,7 +98,7 @@ function updatePlayerRecordLose(loserUID, next, res){
             err.status = 404;
             return next(err);
         }
-        incrementLoss(player)
+        incrementLoss(player, res)
     });
 }
 
@@ -110,7 +110,7 @@ function updatePlayerRecordDraw(drawerUID, next, res){
             err.status = 404;
             return next(err);
         }
-        incrementDraw(player);
+        incrementDraw(player, res);
     });
 }
 
